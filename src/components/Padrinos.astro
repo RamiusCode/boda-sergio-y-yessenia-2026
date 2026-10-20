@@ -1,0 +1,289 @@
+<!-- ═══════════════════════════════════════════════════════════ --><!-- 👔 SECCIÓN: PADRINOS                                        --><!-- ═══════════════════════════════════════════════════════════ -->
+<section class="relative w-full py-4 sm:py-20 md:py-24 lg:py-32">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- 📇 CARD DE PADRINOS -->
+        <div class="flex justify-center">
+            <div class="relative w-full max-w-5xl" id="card-padrinos">
+                <!-- BOTÓN DECORATIVO SUPERIOR -->
+                <div
+                    class="absolute z-20"
+                    style="top: -30px; left: 50%; transform: translateX(-50%);"
+                >
+                    <div class="w-16 h-16" id="boton-decorativo-padrinos">
+                        <img
+                            src="/imagenes/boton.png"
+                            alt="Decoración"
+                            class="w-full h-full object-contain"
+                        />
+                    </div>
+                </div>
+
+                <!-- CARD PRINCIPAL -->
+                <div
+                    class="relative rounded-2xl shadow-xl overflow-hidden bg-[#f5f5f5]"
+                    id="card-principal-padrinos"
+                >
+                    <!-- IMAGEN DE FONDO -->
+                    <img
+                        src="/imagenes/fondoplomo.png"
+                        alt="Fondo padrinos"
+                        class="absolute inset-0 w-full h-full object-cover"
+                    />
+
+                    <!-- VELO BLANCO: mismo tono que las tarjetas de NombresFlores -->
+                    <div class="absolute inset-0 bg-white/40"></div>
+                    <div
+                        class="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-white/20 to-transparent"
+                    >
+                    </div>
+
+                    <!-- Contenido de la card -->
+                    <div class="relative px-2 pt-16 pb-12 z-10">
+                        <!-- TÍTULO PRINCIPAL -->
+                        <div class="text-center mb-4">
+                            <h2
+                                class="font-great-vibes text-[2.25rem] leading-tight text-[#5E6B4A]"
+                                id="titulo-padrinos"
+                            >
+                                Nuestros Padrinos
+                            </h2>
+                        </div>
+
+                        <!-- GRID DE PADRINOS EN 2 COLUMNAS -->
+                        <div
+                            class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-8"
+                            id="grid-padrinos"
+                        >
+                            <!-- COLUMNA 1 -->
+                            <div class="space-y-6">
+                                <!-- PADRINOS DE RELIGIÓN Y CIVIL -->
+                                <div class="text-center" id="seccion-religion-civil">
+                                    <h3
+                                        class="font-cormorant-sc text-xl uppercase tracking-wide text-[#5E6B4A] font-semibold mb-2"
+                                    >
+                                        Padrinos de Religión y Civil
+                                    </h3>
+                                    <p
+                                        class="font-cormorant-sc text-lg leading-relaxed text-[#5E6B4A]"
+                                    >
+                                        Lic. Marcelo Andrés Quiroga Paz<br />
+                                        Lic. Daniela Torrez Medina
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- ✦ SEPARADOR: horizontal en móvil, vertical en escritorio -->
+                            <div
+                                class="flex md:flex-col items-center justify-center gap-2 px-8 md:px-0"
+                                id="separador-padrinos"
+                            >
+                                <div
+                                    class="flex-1 h-px w-full md:w-px md:h-auto bg-[#5E6B4A]/30"
+                                >
+                                </div>
+                                <span class="text-[#9a864a] text-lg leading-none"
+                                    >✦</span
+                                >
+                                <div
+                                    class="flex-1 h-px w-full md:w-px md:h-auto bg-[#5E6B4A]/30"
+                                >
+                                </div>
+                            </div>
+
+                            <!-- COLUMNA 2 -->
+                            <div class="space-y-6">
+                                <!-- PADRINOS DE TORTA -->
+                                <div class="text-center" id="seccion-torta">
+                                    <h3
+                                        class="font-cormorant-sc text-xl uppercase tracking-wide text-[#5E6B4A] font-semibold mb-2"
+                                    >
+                                        Padrinos de Torta
+                                    </h3>
+                                    <p
+                                        class="font-cormorant-sc text-lg leading-relaxed text-[#5E6B4A]"
+                                    >
+                                        Ing. Gonzalo Pérez Aliaga<br />
+                                        Ing. Lucía Mendoza Rocha
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 🌿 RAMA SUPERIOR IZQUIERDA -->
+                <img
+                    src="/imagenes/floresverde.png"
+                    alt=""
+                    aria-hidden="true"
+                    id="flor-izquierda-padrinos"
+                    class="pointer-events-none select-none absolute w-[42%] sm:w-[38%] z-10"
+                    style="top: -10%; left: -20%;"
+                />
+
+                <!-- 🌿 RAMA INFERIOR DERECHA (simetría de 180°) -->
+                <img
+                    src="/imagenes/floresverde.png"
+                    alt=""
+                    aria-hidden="true"
+                    id="flor-derecha-padrinos"
+                    class="pointer-events-none select-none absolute w-[42%] sm:w-[38%] z-10 rotate-180"
+                    style="bottom: -10%; right: -20%;"
+                />
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 🎬 ANIMACIONES CON GSAP                                     -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    if (typeof window !== "undefined") {
+        document.addEventListener("DOMContentLoaded", () => {
+            // 🎯 ANIMACIÓN ELEGANTE DE ENTRADA
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#card-padrinos",
+                    start: "top 80%",
+                    toggleActions: "play none none reset",
+                },
+            });
+
+            // Botón decorativo
+            tl.fromTo(
+                "#boton-decorativo-padrinos",
+                { opacity: 0, scale: 0, rotation: -180 },
+                {
+                    opacity: 1,
+                    scale: 1,
+                    rotation: 0,
+                    duration: 1,
+                    ease: "back.out(1.7)",
+                },
+                0,
+            );
+
+            // Card entra desde abajo
+            tl.fromTo(
+                "#card-principal-padrinos",
+                {
+                    opacity: 0,
+                    y: 50,
+                    scale: 0.95,
+                },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 1,
+                    ease: "power3.out",
+                },
+                0,
+            )
+                // ✦ Título: desciende suave y se asienta
+                .fromTo(
+                    "#titulo-padrinos",
+                    { opacity: 0, y: -28, scale: 0.94 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        duration: 1.4,
+                        ease: "power3.out",
+                    },
+                    0.45,
+                )
+                // ✦ Separador: se abre desde el centro
+                .fromTo(
+                    "#separador-padrinos",
+                    { opacity: 0, scale: 0.75 },
+                    {
+                        opacity: 1,
+                        scale: 1,
+                        duration: 1.4,
+                        ease: "power3.out",
+                    },
+                    0.6,
+                )
+                // 👥 Padrinos de religión y civil: entran desde la izquierda
+                .fromTo(
+                    "#seccion-religion-civil",
+                    { opacity: 0, x: -34 },
+                    {
+                        opacity: 1,
+                        x: 0,
+                        duration: 1.3,
+                        ease: "power3.out",
+                    },
+                    0.75,
+                )
+                // 🎂 Padrinos de torta: entran desde la derecha
+                .fromTo(
+                    "#seccion-torta",
+                    { opacity: 0, x: 34 },
+                    {
+                        opacity: 1,
+                        x: 0,
+                        duration: 1.3,
+                        ease: "power3.out",
+                    },
+                    0.9,
+                );
+
+            // 🌿 RAMA IZQUIERDA: entra deslizándose desde la izquierda
+            gsap.fromTo(
+                "#flor-izquierda-padrinos",
+                {
+                    opacity: 0,
+                    x: -90,
+                    scale: 0.92,
+                },
+                {
+                    opacity: 1,
+                    x: 0,
+                    scale: 1,
+                    duration: 1.6,
+                    delay: 0.35,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: "#card-padrinos",
+                        start: "top 80%",
+                        toggleActions: "play none none reset",
+                    },
+                },
+            );
+
+            // 🌿 RAMA DERECHA: entra deslizándose desde la derecha
+            // (rotation: 180 se mantiene fija para conservar la simetría)
+            gsap.fromTo(
+                "#flor-derecha-padrinos",
+                {
+                    opacity: 0,
+                    x: 90,
+                    scale: 0.92,
+                    rotation: 180,
+                },
+                {
+                    opacity: 1,
+                    x: 0,
+                    scale: 1,
+                    rotation: 180,
+                    duration: 1.6,
+                    delay: 0.35,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: "#card-padrinos",
+                        start: "top 80%",
+                        toggleActions: "play none none reset",
+                    },
+                },
+            );
+        });
+    }
+</script>
