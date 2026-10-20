@@ -5,6 +5,8 @@ interface Props {
     nombreInvitado?: string;
 }
 
+import { palabraPases, frasePases } from "../lib/pase";
+
 const { numeroPases = 1, nombreInvitado = "" } = Astro.props;
 ---
 
@@ -49,19 +51,22 @@ const { numeroPases = 1, nombreInvitado = "" } = Astro.props;
                     <!-- Contenido de la card -->
                     <div class="relative px-6 pt-16 pb-10 z-10 text-center">
 
-                        <!-- DEDICATORIA AL INVITADO (opcional) -->
-                        {
-                            nombreInvitado && (
-                                <div class="mb-8" id="dedicatoria-pase">
-                                    <p class="font-crimson text-base uppercase tracking-widest text-[#9a864a] font-semibold mb-3">
-                                        Con mucho cariño para:
-                                    </p>
-                                    <p class="font-great-vibes text-[2rem] text-[#4A5538] leading-tight wrap-break-word">
-                                        {nombreInvitado}
-                                    </p>
-                                </div>
-                            )
-                        }
+                        <!-- DEDICATORIA AL INVITADO: escondida hasta que el link traiga nombre -->
+                        <div
+                            class="mb-8"
+                            id="dedicatoria-pase"
+                            style={nombreInvitado ? undefined : "display: none;"}
+                        >
+                            <p class="font-crimson text-base uppercase tracking-widest text-[#9a864a] font-semibold mb-3">
+                                Con mucho cariño para:
+                            </p>
+                            <p
+                                id="nombre-invitado"
+                                class="font-great-vibes text-[2rem] text-[#4A5538] leading-tight wrap-break-word"
+                            >
+                                {nombreInvitado}
+                            </p>
+                        </div>
 
                         <!-- TÍTULO -->
                         <div class="mb-6" id="titulo-pase">
@@ -80,20 +85,22 @@ const { numeroPases = 1, nombreInvitado = "" } = Astro.props;
                         <!-- NÚMERO DE PASES -->
                         <div class="mb-4" id="numero-pase">
                             <p
+                                id="numero-pases"
                                 class="font-charm text-[#9a864a] font-bold leading-none"
                                 style="font-size: 5rem;"
                             >
                                 {numeroPases}
                             </p>
                             <p
+                                id="palabra-pases"
                                 class="font-crimson text-base uppercase tracking-[0.3em] text-[#5E6B4A] mt-1"
                             >
-                                {numeroPases === 1 ? "Pase" : "Pases"}
+                                {palabraPases(numeroPases)}
                             </p>
                         </div>
 
                         <!-- SEPARADOR -->
-                        <div class="flex items-center justify-center gap-2 my-4">
+                        <div class="flex items-center justify-center gap-2 my-4" id="separador-pase">
                             <div class="w-10 h-px bg-[#5E6B4A]/30"></div>
                             <div class="w-1.5 h-1.5 rounded-full bg-[#9a864a]/60"></div>
                             <div class="w-10 h-px bg-[#5E6B4A]/30"></div>
@@ -102,15 +109,10 @@ const { numeroPases = 1, nombreInvitado = "" } = Astro.props;
                         <!-- TEXTO DESCRIPTIVO -->
                         <div id="texto-pase">
                             <p
+                                id="frase-pases"
                                 class="font-cormorant-sc text-lg leading-relaxed text-[#5E6B4A]"
                             >
-                                {
-                                    numeroPases === 1
-                                        ? "Esperamos contar con tu presencia"
-                                        : numeroPases === 2
-                                          ? "Esperamos contar con la presencia de ambos"
-                                          : `Esperamos contar con la presencia de los ${numeroPases}`
-                                }
+                                {frasePases(numeroPases)}
                             </p>
                         </div>
 
@@ -147,10 +149,76 @@ const { numeroPases = 1, nombreInvitado = "" } = Astro.props;
 <script>
     import { gsap } from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
+    import { datosInvitado, alCambiarInvitado } from "../lib/invitado";
+    import type { Invitado } from "../lib/invitado";
+    import { palabraPases, frasePases } from "../lib/pase";
 
     gsap.registerPlugin(ScrollTrigger);
 
+    // ═══════════════════════════════════════════════════════════
+    // PASE PERSONALIZADO
+    // El link trae solo un código (?i=k7m2p); el nombre y los pases viven
+    // en la base. Sin código la tarjeta queda como la armó el servidor.
+    // ═══════════════════════════════════════════════════════════
+    function pintarPase(nombre: string | null, pases: number | null) {
+        if (nombre) {
+            const el = document.getElementById("nombre-invitado");
+            if (el) el.textContent = nombre;
+            const dedicatoria = document.getElementById("dedicatoria-pase");
+            if (dedicatoria) dedicatoria.style.display = "";
+        }
+        if (pases !== null && Number.isInteger(pases) && pases > 0) {
+            const num = document.getElementById("numero-pases");
+            const palabra = document.getElementById("palabra-pases");
+            const frase = document.getElementById("frase-pases");
+            if (num) num.textContent = String(pases);
+            if (palabra) palabra.textContent = palabraPases(pases);
+            if (frase) frase.textContent = frasePases(pases);
+
+            // Un monigote por pase
+            const iconos = document.getElementById("iconos-pase");
+            const molde = iconos?.firstElementChild;
+            if (iconos && molde && iconos.children.length !== pases) {
+                iconos.innerHTML = "";
+                for (let i = 0; i < pases; i++) {
+                    const copia = molde.cloneNode(true) as HTMLElement;
+                    copia.style.animationDelay = i * 0.2 + "s";
+                    iconos.append(copia);
+                }
+            }
+        }
+        // La tarjeta cambió de alto: las animaciones de más abajo tienen
+        // que recalcular dónde arrancan.
+        ScrollTrigger.refresh();
+    }
+
+    function mostrarInvitado(inv: Invitado | null) {
+        if (!inv) return;
+        // Boda sin pases: la tarjeta queda solo con el nombre, sin un
+        // "1 pase" inventado.
+        if (inv.funciones && inv.funciones.pases === false) {
+            for (const id of [
+                "titulo-pase",
+                "numero-pase",
+                "separador-pase",
+                "texto-pase",
+                "iconos-pase",
+            ]) {
+                const el = document.getElementById(id);
+                if (el) el.style.display = "none";
+            }
+            pintarPase(inv.nombre, null);
+            return;
+        }
+        pintarPase(inv.nombre, inv.pases);
+    }
+
     if (typeof window !== "undefined") {
+        datosInvitado().then(mostrarInvitado);
+        // Si los novios corrigen el nombre o los pases con la invitación
+        // abierta, la tarjeta se actualiza sola.
+        alCambiarInvitado(mostrarInvitado);
+
         document.addEventListener("DOMContentLoaded", () => {
             gsap.fromTo(
                 "#boton-decorativo-pase",
