@@ -16,7 +16,7 @@ const urlSitio = new URL("/", Astro.site);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light only" />
+    <meta name="color-scheme" content="only light" />
     <link rel="icon" type="image/png" href="/iconos/Anillos.png" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
@@ -54,21 +54,21 @@ const urlSitio = new URL("/", Astro.site);
     <style>
       /* FORZAR MODO CLARO - DESHABILITAR MODO OSCURO */
       :root {
-        color-scheme: light only;
+        color-scheme: only light;
       }
 
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        color-scheme: light only;
+        color-scheme: only light;
       }
 
       html {
         width: 100%;
         height: 100%;
         overflow-x: hidden;
-        color-scheme: light only;
+        color-scheme: only light;
       }
 
       body {
@@ -77,7 +77,7 @@ const urlSitio = new URL("/", Astro.site);
         width: 100%;
         min-height: 100vh;
         overflow-x: hidden;
-        color-scheme: light only;
+        color-scheme: only light;
         position: relative;
         background-color: #ffffff;
       }
@@ -106,7 +106,7 @@ const urlSitio = new URL("/", Astro.site);
       /* Prevenir cualquier cambio de color por modo oscuro */
       @media (prefers-color-scheme: dark) {
         :root {
-          color-scheme: light only !important;
+          color-scheme: only light !important;
         }
 
         html,
@@ -116,7 +116,7 @@ const urlSitio = new URL("/", Astro.site);
         }
 
         * {
-          color-scheme: light only !important;
+          color-scheme: only light !important;
         }
       }
     </style>
